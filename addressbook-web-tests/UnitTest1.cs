@@ -1,6 +1,5 @@
-﻿
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace addressbook_web_tests
 {
