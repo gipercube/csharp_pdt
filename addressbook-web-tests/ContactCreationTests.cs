@@ -17,9 +17,9 @@ namespace WebAddressbookTests
             navigationHelper.GoToAddNewEntry();
             EntryData entry = new EntryData("Иван");
             entry.Lastname = "Петров";
-            FillNewEntryForm(entry);
-            SubmitEntryCreation();
-            ReturnToMainPage();
+            сontactHelper.FillNewEntryForm(entry);
+            сontactHelper.SubmitEntryCreation();
+            сontactHelper.ReturnToMainPage();
         }
     }
 }

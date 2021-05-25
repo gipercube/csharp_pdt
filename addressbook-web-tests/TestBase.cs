@@ -19,6 +19,7 @@ namespace WebAddressbookTests
         protected LoginHelper loginHelper;
         protected NavigationHelper navigationHelper;
         protected GroupHelper groupHelper;
+        protected ContactHelper сontactHelper;
 
         [SetUp]
         public void SetupTest()
@@ -30,6 +31,7 @@ namespace WebAddressbookTests
             loginHelper = new LoginHelper(driver);
             navigationHelper = new NavigationHelper(driver, baseURL);
             groupHelper = new GroupHelper(driver);
+            сontactHelper = new ContactHelper(driver);
         }
 
         [TearDown]
@@ -44,29 +46,6 @@ namespace WebAddressbookTests
                 // Ignore errors if unable to close the browser
             }
             Assert.AreEqual("", verificationErrors.ToString());
-        }
-
-        protected void FillNewEntryForm(EntryData entry)
-        {
-            driver.FindElement(By.Name("firstname")).Click();
-            driver.FindElement(By.Name("firstname")).Clear();
-            driver.FindElement(By.Name("firstname")).SendKeys(entry.Firstname);
-            driver.FindElement(By.Name("lastname")).Click();
-            driver.FindElement(By.Name("lastname")).Clear();
-            driver.FindElement(By.Name("lastname")).SendKeys(entry.Lastname);
-        }
-        protected void SubmitEntryCreation()
-        {
-            driver.FindElement(By.XPath("(//input[@name='submit'])[2]")).Click();
-        }
-        
-        protected void ReturnToMainPage()
-        {
-            driver.FindElement(By.LinkText("home page")).Click();
-        }
-        protected void Logout()
-        {
-            driver.FindElement(By.LinkText("Logout")).Click();
         }
     }
 }

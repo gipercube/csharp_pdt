@@ -22,7 +22,7 @@ namespace WebAddressbookTests
             groupHelper.FillGroupForm(group);
             groupHelper.SubmitGroupCreation();
             groupHelper.ReturnToGroupsPage();
-            Logout();
+            loginHelper.Logout();
         }
     }
 }

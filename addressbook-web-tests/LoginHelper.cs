@@ -26,5 +26,9 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("pass")).SendKeys(account.Password);
             driver.FindElement(By.XPath("//input[@value='Login']")).Click();
         }
+        public void Logout()
+        {
+            driver.FindElement(By.LinkText("Logout")).Click();
+        }
     }
 }
