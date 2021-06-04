@@ -15,10 +15,23 @@ namespace WebAddressbookTests
             app.Navigator.GoToAddNewEntry();
             EntryData entry = new EntryData("Иван");
             entry.Lastname = "Петров";
-            app.Contacts
-                .FillNewEntryForm(entry)
-                .SubmitEntryCreation()
-                .ReturnToMainPage();
+            app.Contacts.Create(entry);
+        }
+        [Test]
+        public void ContactCreationWithEngNameTest()
+        {
+            app.Navigator.GoToAddNewEntry();
+            EntryData entry = new EntryData("Jay");
+            entry.Lastname = "Lo";
+            app.Contacts.Create(entry);
+        }
+        [Test]
+        public void ContactCreationWithLongEngNameTest()
+        {
+            app.Navigator.GoToAddNewEntry();
+            EntryData entry = new EntryData("Persival");
+            entry.Lastname = "Nottgertskingston";
+            app.Contacts.Create(entry);
         }
     }
 }
