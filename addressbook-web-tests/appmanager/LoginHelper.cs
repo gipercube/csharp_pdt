@@ -9,13 +9,10 @@ using OpenQA.Selenium.Support.UI;
 
 namespace WebAddressbookTests
 {
-    public class LoginHelper
+    public class LoginHelper : HelperBase
     {
-        private IWebDriver driver;
-
-        public LoginHelper(IWebDriver driver)
+        public LoginHelper(ApplicationManager manager) : base(manager)
         {
-            this.driver = driver;
         }
         public void Login(AccountData account)
         {

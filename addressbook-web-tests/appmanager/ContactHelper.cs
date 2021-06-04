@@ -9,15 +9,12 @@ using OpenQA.Selenium.Support.UI;
 
 namespace WebAddressbookTests
 {
-    public class ContactHelper
+    public class ContactHelper : HelperBase
     {
-        private IWebDriver driver;
-
-        public ContactHelper(IWebDriver driver)
+        public ContactHelper(ApplicationManager manager) : base(manager)
         {
-            this.driver = driver;
         }
-        public void FillNewEntryForm(EntryData entry)
+        public ContactHelper FillNewEntryForm(EntryData entry)
         {
             driver.FindElement(By.Name("firstname")).Click();
             driver.FindElement(By.Name("firstname")).Clear();
@@ -25,14 +22,17 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("lastname")).Click();
             driver.FindElement(By.Name("lastname")).Clear();
             driver.FindElement(By.Name("lastname")).SendKeys(entry.Lastname);
+            return this;
         }
-        public void SubmitEntryCreation()
+        public ContactHelper SubmitEntryCreation()
         {
             driver.FindElement(By.XPath("(//input[@name='submit'])[2]")).Click();
+            return this;
         }
-        public void ReturnToMainPage()
+        public ContactHelper ReturnToMainPage()
         {
             driver.FindElement(By.LinkText("home page")).Click();
+            return this;
         }
     }
 }
