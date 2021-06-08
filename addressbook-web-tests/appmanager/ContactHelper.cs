@@ -66,25 +66,21 @@ namespace WebAddressbookTests
         public ContactHelper MoveToGroupFromMainPage()
         {
             FirstCheckboxSelect();
-            AddToGroup(6);
+            AddToGroup(1);
             return this;
         }
 
         public ContactHelper RemoveFromGroupFromMainPage()
         {
             FirstCheckboxSelect();
-            RemoveFromGroup(6);
+            RemoveFromGroup(1);
             return this;
         }
 
         public ContactHelper FillNewEntryForm(EntryData entry)
         {
-            driver.FindElement(By.Name("firstname")).Click();
-            driver.FindElement(By.Name("firstname")).Clear();
-            driver.FindElement(By.Name("firstname")).SendKeys(entry.Firstname);
-            driver.FindElement(By.Name("lastname")).Click();
-            driver.FindElement(By.Name("lastname")).Clear();
-            driver.FindElement(By.Name("lastname")).SendKeys(entry.Lastname);
+            Type(By.Name("firstname"), entry.Firstname);
+            Type(By.Name("lastname"), entry.Lastname);
             return this;
         }
         public ContactHelper SubmitEntryCreation()
