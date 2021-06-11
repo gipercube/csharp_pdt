@@ -23,6 +23,8 @@ namespace WebAddressbookTests
         }
         public ContactHelper Modify(EntryData entry)
         {
+            //manager.Navigator.OpenHomePage();
+            //IsContactCreate();
             FillNewEntryForm(entry);
             UpdatetEntry();
             ReturnToMainPage();
@@ -31,6 +33,8 @@ namespace WebAddressbookTests
 
         public ContactHelper RemoveFromDetail()
         {
+            manager.Navigator.OpenHomePage();
+            IsContactCreate();
             TableDetails();
             DetailsModify();
             DeleteEntry();
@@ -39,6 +43,8 @@ namespace WebAddressbookTests
 
         public ContactHelper RemoveFromMainPage()
         {
+            manager.Navigator.OpenHomePage();
+            IsContactCreate();
             TableEdit();
             DeleteEntry();
             return this;
@@ -46,12 +52,16 @@ namespace WebAddressbookTests
 
         public ContactHelper RemoveFromMainPageWithCheckbox()
         {
+            manager.Navigator.OpenHomePage();
+            IsContactCreate();
             FirstCheckboxSelect();
             DeleteEntryFromMainPage();
             return this;
         }
         public ContactHelper AllRemoveFromMainPage()
         {
+            manager.Navigator.OpenHomePage();
+            IsContactCreate();
             SelectAll();
             DeleteEntryFromMainPage();
             return this;
@@ -65,6 +75,9 @@ namespace WebAddressbookTests
 
         public ContactHelper MoveToGroupFromMainPage()
         {
+            manager.Navigator.OpenHomePage();
+            IsContactCreate();
+            manager.Groups.IsGroupPresentOnMainPage();
             FirstCheckboxSelect();
             AddToGroup(1);
             return this;
@@ -72,6 +85,8 @@ namespace WebAddressbookTests
 
         public ContactHelper RemoveFromGroupFromMainPage()
         {
+            manager.Navigator.OpenHomePage();
+            IsContactCreate();
             FirstCheckboxSelect();
             RemoveFromGroup(1);
             return this;
@@ -161,6 +176,17 @@ namespace WebAddressbookTests
             FirstCheckboxSelect();
             driver.FindElement(By.Name("remove")).Click();
             return this;
+        }
+
+        public void IsContactCreate()
+        {
+            if (!IsElementPresent(By.CssSelector("tr[name='entry']")))
+            {
+                manager.Navigator.GoToAddNewEntry();
+                EntryData entry = new EntryData("Иван через if");
+                entry.Lastname = "Петров";
+                Create(entry);
+            }
         }
 
     }

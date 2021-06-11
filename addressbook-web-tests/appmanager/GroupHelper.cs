@@ -19,6 +19,7 @@ namespace WebAddressbookTests
         public GroupHelper Remove(int groupNo)
         {
             manager.Navigator.GoToGroupsPage();
+            IsGroupPresent();
             SelectGroup(groupNo);
             RemoveGroup();
             ReturnToGroupsPage();
@@ -28,6 +29,7 @@ namespace WebAddressbookTests
         public GroupHelper Modify(int groupNo, GroupData newData)
         {
             manager.Navigator.GoToGroupsPage();
+            IsGroupPresent();
             SelectGroup(groupNo);
             InitGroupMofication();
             FillGroupForm(newData);
@@ -91,5 +93,26 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public void IsGroupPresent()
+        {
+            if (!IsElementPresent(By.CssSelector(".group")))
+            {
+                GroupData group = new GroupData("New Group Name with if");
+                group.Header = "Group Header";
+                group.Footer = "Group Footer";
+                Create(group);
+            }
+        }
+        public void IsGroupPresentOnMainPage()
+        {
+            if (!IsElementPresent(By.XPath("//select[@name='to_group']option")))
+            {
+                GroupData group = new GroupData("New Group Name with if");
+                group.Header = "Group Header";
+                group.Footer = "Group Footer";
+                Create(group);
+                manager.Navigator.OpenHomePage();
+            }
+        }
     }
 }

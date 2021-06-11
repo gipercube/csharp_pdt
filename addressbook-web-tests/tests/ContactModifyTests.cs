@@ -13,6 +13,8 @@ namespace WebAddressbookTests
         [Test]
         public void ContactModifyFromDetailTest()
         {
+            app.Navigator.OpenHomePage();
+            app.Contacts.IsContactCreate();
             app.Contacts.TableDetails();
             app.Contacts.DetailsModify();
             EntryData newEntry = new EntryData("Иван");
@@ -23,6 +25,8 @@ namespace WebAddressbookTests
         [Test]
         public void ContactModifyFromMainPageTest()
         {
+            app.Navigator.OpenHomePage();
+            app.Contacts.IsContactCreate();
             app.Contacts.TableEdit();
             EntryData newEntry = new EntryData("Steve");
             newEntry.Lastname = "O";
