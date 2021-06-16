@@ -105,8 +105,8 @@ namespace WebAddressbookTests
         }
         public void IsGroupPresentOnMainPage()
         {
-            if (!IsElementPresent(By.XPath("//select[@name='to_group']option")))
-            {
+            if (!IsElementPresent(By.XPath("//select[@name='to_group']/option")))
+            { 
                 GroupData group = new GroupData("New Group Name with if");
                 group.Header = "Group Header";
                 group.Footer = "Group Footer";

@@ -87,6 +87,8 @@ namespace WebAddressbookTests
         {
             manager.Navigator.OpenHomePage();
             IsContactCreate();
+            manager.Groups.IsGroupPresentOnMainPage();
+            IsContactInGroup();
             FirstCheckboxSelect();
             RemoveFromGroup(1);
             return this;
@@ -186,6 +188,19 @@ namespace WebAddressbookTests
                 EntryData entry = new EntryData("Иван через if");
                 entry.Lastname = "Петров";
                 Create(entry);
+            }
+        }
+
+        public void IsContactInGroup()
+        {
+            driver.FindElement((By.XPath("//option[3]"))).Click();
+            if (!IsElementPresent(By.CssSelector("tr[name='entry']")))
+            {
+                MoveToGroupFromMainPage();
+                manager.Navigator.OpenHomePage();
+            } else
+            {
+                manager.Navigator.OpenHomePage();
             }
         }
 
