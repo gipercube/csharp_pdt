@@ -13,30 +13,48 @@ namespace WebAddressbookTests
         [Test]
         public void ContactModifyFromDetailTest()
         {
-            app.Navigator.OpenHomePage();
+            // prepare
             app.Contacts.IsContactCreate();
-            app.Contacts.TableDetails();
-            app.Contacts.DetailsModify();
-            EntryData newEntry = new EntryData("Иван");
-            newEntry.Lastname = "Петров";
-            app.Contacts.Modify(newEntry);
+
+            // action
+            EntryData newEntry = new EntryData("New Иван");
+            newEntry.Lastname = "New Петров";
+            app.Contacts.ModifyFromDetailTest(newEntry);
+
+            // verification
+            Assert.IsTrue(app.Contacts.ContactModified(newEntry));
         }
+
+
 
         [Test]
         public void ContactModifyFromMainPageTest()
         {
-            app.Navigator.OpenHomePage();
+            // prepare
             app.Contacts.IsContactCreate();
             app.Contacts.TableEdit();
-            EntryData newEntry = new EntryData("Steve");
-            newEntry.Lastname = "O";
+
+            // action
+            EntryData newEntry = new EntryData("11");
+            newEntry.Lastname = "22";
             app.Contacts.Modify(newEntry);
+
+            // verification
+            Assert.IsTrue(app.Contacts.ContactModified(newEntry));
         }
 
         [Test]
         public void ContactMoveToGroupFromMainPageTest()
         {
+            // prepare
+            app.Contacts.IsContactCreate();
+            app.Groups.IsGroupPresentOnMainPage();
+
+            // action
             app.Contacts.MoveToGroupFromMainPage();
+
+            // verification
+            Assert.IsTrue(app.Contacts.IsContactMovedToGroup());
         }
         [Test]
         public void ContactRemoveFromGroupFromMainPage()

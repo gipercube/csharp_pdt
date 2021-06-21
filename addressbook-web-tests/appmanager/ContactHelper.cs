@@ -38,6 +38,7 @@ namespace WebAddressbookTests
             TableDetails();
             DetailsModify();
             DeleteEntry();
+            ReturnToMainPage();
             return this;
         }
 
@@ -75,9 +76,6 @@ namespace WebAddressbookTests
 
         public ContactHelper MoveToGroupFromMainPage()
         {
-            manager.Navigator.OpenHomePage();
-            IsContactCreate();
-            manager.Groups.IsGroupPresentOnMainPage();
             FirstCheckboxSelect();
             AddToGroup(1);
             return this;
@@ -92,6 +90,28 @@ namespace WebAddressbookTests
             FirstCheckboxSelect();
             RemoveFromGroup(1);
             return this;
+        }
+
+        public ContactHelper ModifyFromDetailTest(EntryData newEntry)
+        {
+            TableDetails();
+            DetailsModify();
+            Modify(newEntry);
+            return this;
+        }
+
+        public bool ContactModified(EntryData newEntry)
+        {
+            return IsMainPage()
+                    && driver.FindElement(By.CssSelector("#maintable > tbody > tr:nth-child(2) > td:nth-child(2)")).Text
+                    == newEntry.Lastname
+                    && driver.FindElement(By.CssSelector("#maintable > tbody > tr:nth-child(2) > td:nth-child(3)")).Text
+                    == newEntry.Firstname;
+        }
+
+        public bool IsMainPage()
+        {
+            return IsElementPresent(By.CssSelector("a[title='Sort on “Last name”']"));
         }
 
         public ContactHelper FillNewEntryForm(EntryData entry)
@@ -182,13 +202,14 @@ namespace WebAddressbookTests
 
         public void IsContactCreate()
         {
+            manager.Navigator.OpenHomePage();
             if (!IsElementPresent(By.CssSelector("tr[name='entry']")))
             {
                 manager.Navigator.GoToAddNewEntry();
                 EntryData entry = new EntryData("Иван через if");
                 entry.Lastname = "Петров";
                 Create(entry);
-            }
+            } 
         }
 
         public void IsContactInGroup()
@@ -202,6 +223,18 @@ namespace WebAddressbookTests
             {
                 manager.Navigator.OpenHomePage();
             }
+        }
+
+        public bool IsContactMovedToGroup(EntryData createdEntry)
+        {
+            driver.FindElement((By.XPath("//option[3]"))).Click();
+            return (IsElementPresent(By.CssSelector("tr[name='entry']")))
+            
+        && driver.FindElement(By.CssSelector("#maintable > tbody > tr:nth-child(2) > td:nth-child(2)")).Text
+        == createdEntry.Lastname
+        && driver.FindElement(By.CssSelector("#maintable > tbody > tr:nth-child(2) > td:nth-child(3)")).Text
+        == createdEntry.Firstname;
+
         }
 
     }
