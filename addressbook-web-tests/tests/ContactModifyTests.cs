@@ -59,7 +59,16 @@ namespace WebAddressbookTests
         [Test]
         public void ContactRemoveFromGroupFromMainPage()
         {
+            // prepare
+            app.Contacts.IsContactCreate();
+            app.Groups.IsGroupPresentOnMainPage();
+            app.Contacts.IsContactInGroup();
+
+            // action
             app.Contacts.RemoveFromGroupFromMainPage();
+
+            // verification
+            Assert.IsTrue(app.Contacts.IsContactRemovedFromGroup());
         }
 
         

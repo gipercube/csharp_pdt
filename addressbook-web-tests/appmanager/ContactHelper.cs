@@ -38,14 +38,11 @@ namespace WebAddressbookTests
             TableDetails();
             DetailsModify();
             DeleteEntry();
-            ReturnToMainPage();
             return this;
         }
 
         public ContactHelper RemoveFromMainPage()
         {
-            manager.Navigator.OpenHomePage();
-            IsContactCreate();
             TableEdit();
             DeleteEntry();
             return this;
@@ -53,16 +50,12 @@ namespace WebAddressbookTests
 
         public ContactHelper RemoveFromMainPageWithCheckbox()
         {
-            manager.Navigator.OpenHomePage();
-            IsContactCreate();
             FirstCheckboxSelect();
             DeleteEntryFromMainPage();
             return this;
         }
         public ContactHelper AllRemoveFromMainPage()
         {
-            manager.Navigator.OpenHomePage();
-            IsContactCreate();
             SelectAll();
             DeleteEntryFromMainPage();
             return this;
@@ -76,6 +69,7 @@ namespace WebAddressbookTests
 
         public ContactHelper MoveToGroupFromMainPage()
         {
+            manager.Navigator.OpenHomePage();
             FirstCheckboxSelect();
             AddToGroup(1);
             return this;
@@ -83,10 +77,6 @@ namespace WebAddressbookTests
 
         public ContactHelper RemoveFromGroupFromMainPage()
         {
-            manager.Navigator.OpenHomePage();
-            IsContactCreate();
-            manager.Groups.IsGroupPresentOnMainPage();
-            IsContactInGroup();
             FirstCheckboxSelect();
             RemoveFromGroup(1);
             return this;
@@ -225,16 +215,30 @@ namespace WebAddressbookTests
             }
         }
 
-        public bool IsContactMovedToGroup(EntryData createdEntry)
+        public bool IsContactMovedToGroup()
         {
-            driver.FindElement((By.XPath("//option[3]"))).Click();
-            return (IsElementPresent(By.CssSelector("tr[name='entry']")))
-            
-        && driver.FindElement(By.CssSelector("#maintable > tbody > tr:nth-child(2) > td:nth-child(2)")).Text
-        == createdEntry.Lastname
-        && driver.FindElement(By.CssSelector("#maintable > tbody > tr:nth-child(2) > td:nth-child(3)")).Text
-        == createdEntry.Firstname;
+            return driver.FindElement(By.CssSelector(".msgbox")).Text.Contains("Users added")
+                   && driver.FindElement(By.CssSelector("#content h1")).Text == "Groups";
 
+        }
+
+        public bool IsContactRemovedFromGroup()
+        {
+            return driver.FindElement(By.CssSelector(".msgbox")).Text.Contains("Users removed")
+                   && driver.FindElement(By.CssSelector("#content h1")).Text == "Groups";
+
+        }
+
+        public bool IsContactRemovalFromDetail()
+        {
+            return driver.FindElement(By.CssSelector(".msgbox")).Text.Contains("Record successful deleted")
+                   && driver.FindElement(By.CssSelector("#content h1")).Text == "Delete record";
+        }
+
+        public bool IsContactRemovalFromMainPage()
+        {
+                return driver.FindElement(By.CssSelector(".msgbox")).Text.Contains("Record successful deleted")
+                   && driver.FindElement(By.CssSelector("#content h1")).Text == "Delete record";
         }
 
     }

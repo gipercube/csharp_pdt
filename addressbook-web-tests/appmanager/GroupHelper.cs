@@ -18,23 +18,18 @@ namespace WebAddressbookTests
 
         public GroupHelper Remove(int groupNo)
         {
-            manager.Navigator.GoToGroupsPage();
-            IsGroupPresent();
             SelectGroup(groupNo);
             RemoveGroup();
-            ReturnToGroupsPage();
             return this;
         }
 
         public GroupHelper Modify(int groupNo, GroupData newData)
         {
-            manager.Navigator.GoToGroupsPage();
-            IsGroupPresent();
+            
             SelectGroup(groupNo);
             InitGroupMofication();
             FillGroupForm(newData);
             SubmitGroupModofication();
-            ReturnToGroupsPage();
             return this;
         }
 
@@ -95,6 +90,7 @@ namespace WebAddressbookTests
 
         public void IsGroupPresent()
         {
+            manager.Navigator.GoToGroupsPage();
             if (!IsElementPresent(By.CssSelector(".group")))
             {
                 GroupData group = new GroupData("New Group Name with if");
@@ -114,5 +110,18 @@ namespace WebAddressbookTests
                 manager.Navigator.OpenHomePage();
             }
         }
+
+        public bool IsGroupModified()
+        {
+            return driver.FindElement(By.CssSelector(".msgbox")).Text.Contains("Group record has been updated")
+                   && driver.FindElement(By.CssSelector("#content h1")).Text == "Groups";
+        }
+
+        public bool IsGroupRempved()
+        {
+            return driver.FindElement(By.CssSelector(".msgbox")).Text.Contains("Group has been removed")
+                   && driver.FindElement(By.CssSelector("#content h1")).Text == "Groups";
+        }
+
     }
 }

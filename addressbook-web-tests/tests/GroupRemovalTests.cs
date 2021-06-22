@@ -12,7 +12,14 @@ namespace WebAddressbookTests
         [Test]
         public void GroupRemovalTest()
         {
+            // prepare
+            app.Groups.IsGroupPresent();
+
+            // action
             app.Groups.Remove(1);
+
+            // verification
+            Assert.IsTrue(app.Groups.IsGroupRempved());
         }
     }
 }
