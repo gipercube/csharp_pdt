@@ -17,13 +17,21 @@ namespace WebAddressbookTests
             app.Groups.IsGroupPresent();
 
             // action
+            List<GroupData> oldGroups = app.Groups.GetGroupList();
+
             GroupData newData = new GroupData("Modify Group Name with if");
             newData.Header = "Modify Group Header";
             newData.Footer = "Modify Group Footer";
-            app.Groups.Modify(1, newData);
+            app.Groups.Modify(0, newData);
+
+            List<GroupData> newGroups = app.Groups.GetGroupList();
+            oldGroups[0].Name = newData.Name;
+            oldGroups.Sort();
+            newGroups.Sort();
 
             // verification
-            app.Groups.IsGroupModified();
+            Assert.AreEqual(oldGroups, newGroups);
+            // app.Groups.IsGroupModified();
 
         }
     }
