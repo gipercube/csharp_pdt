@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -239,6 +240,21 @@ namespace WebAddressbookTests
         {
                 return driver.FindElement(By.CssSelector(".msgbox")).Text.Contains("Record successful deleted")
                    && driver.FindElement(By.CssSelector("#content h1")).Text == "Delete record";
+        }
+
+        public List<EntryData> GetEntriesList()
+        {
+            List<EntryData> entries = new List<EntryData>() { };
+            manager.Navigator.OpenHomePage();
+            ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("tr[name='entry']"));
+            foreach (IWebElement element in elements)
+            {
+                String lastName = element.FindElement(By.CssSelector("td:nth-of-type(2)")).Text;
+                String firstName = element.FindElement(By.CssSelector("td:nth-of-type(3)")).Text;
+                entries.Add(new EntryData(lastName, firstName));
+                
+            }
+            return entries;
         }
 
     }
