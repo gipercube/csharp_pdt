@@ -22,14 +22,9 @@ namespace WebAddressbookTests
             app.Groups.Remove(0);
 
             List<GroupData> newGroups = app.Groups.GetGroupList();
-
             oldGroups.RemoveAt(0);
-            
-
 
             // verification
-            
-//            Assert.IsTrue(app.Groups.IsGroupRempved());
             Assert.AreEqual(oldGroups, newGroups);
         }
     }

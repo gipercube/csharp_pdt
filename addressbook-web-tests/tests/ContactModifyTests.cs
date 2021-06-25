@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -15,14 +16,21 @@ namespace WebAddressbookTests
         {
             // prepare
             app.Contacts.IsContactCreate();
-
-            // action
+            List<EntryData> oldEntry = app.Contacts.GetEntriesList();
             EntryData newEntry = new EntryData("New Иван");
             newEntry.Lastname = "New Петров";
-            app.Contacts.ModifyFromDetailTest(newEntry);
+
+            // action
+            app.Contacts.ModifyFromDetailTest(newEntry, 0);
+            oldEntry[0].Firstname = newEntry.Firstname;
+            oldEntry[0].Lastname = newEntry.Lastname;
+
+            List<EntryData> newEntryMod = app.Contacts.GetEntriesList();
+            oldEntry.Sort();
+            newEntryMod.Sort();
 
             // verification
-            Assert.IsTrue(app.Contacts.ContactModified(newEntry));
+            Assert.AreEqual(oldEntry[0], newEntryMod[0]);
         }
 
 
@@ -32,15 +40,23 @@ namespace WebAddressbookTests
         {
             // prepare
             app.Contacts.IsContactCreate();
-            app.Contacts.TableEdit();
-
-            // action
+            List<EntryData> oldEntry = app.Contacts.GetEntriesList();
+            app.Contacts.TableEdit(0);
+                        
             EntryData newEntry = new EntryData("11");
             newEntry.Lastname = "22";
+
+            // action
             app.Contacts.Modify(newEntry);
+            oldEntry[0].Firstname = newEntry.Firstname;
+            oldEntry[0].Lastname = newEntry.Lastname;
+
+            List<EntryData> newEntryMod = app.Contacts.GetEntriesList();
+            oldEntry.Sort();
+            newEntryMod.Sort();
 
             // verification
-            Assert.IsTrue(app.Contacts.ContactModified(newEntry));
+            Assert.AreEqual(oldEntry[0], newEntryMod[0]);
         }
 
         [Test]

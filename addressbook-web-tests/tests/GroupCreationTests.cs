@@ -13,19 +13,22 @@ namespace WebAddressbookTests
         [Test]
         public void GroupCreationTest()
         {
+            // prepare
             GroupData group = new GroupData("New Group Name");
             group.Header = "Group Header";
             group.Footer = "Group Footer";
 
             List<GroupData> oldGroups = app.Groups.GetGroupList();
 
+            // action
             app.Groups.Create(group);
             
-
             List<GroupData> newGroups = app.Groups.GetGroupList();
             oldGroups.Add(group);
             oldGroups.Sort();
             newGroups.Sort();
+
+            // verification
             Assert.AreEqual(oldGroups, newGroups);
         }
 

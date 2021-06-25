@@ -32,19 +32,19 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public ContactHelper RemoveFromDetail()
+        public ContactHelper RemoveFromDetail(int index)
         {
             manager.Navigator.OpenHomePage();
             IsContactCreate();
-            TableDetails();
+            TableDetails(index);
             DetailsModify();
             DeleteEntry();
             return this;
         }
 
-        public ContactHelper RemoveFromMainPage()
+        public ContactHelper RemoveFromMainPage(int index)
         {
-            TableEdit();
+            TableEdit(index);
             DeleteEntry();
             return this;
         }
@@ -83,9 +83,9 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public ContactHelper ModifyFromDetailTest(EntryData newEntry)
+        public ContactHelper ModifyFromDetailTest(EntryData newEntry, int index)
         {
-            TableDetails();
+            TableDetails(index);
             DetailsModify();
             Modify(newEntry);
             return this;
@@ -123,16 +123,16 @@ namespace WebAddressbookTests
         }
 
         //Переход на детальную страницу контакта из таблицы на главной странице
-        public ContactHelper TableDetails()
+        public ContactHelper TableDetails(int index)
         {
-            driver.FindElement(By.XPath("(//img[@alt='Details'])[1]")).Click();
+            driver.FindElement(By.XPath("(//img[@alt='Details'])[" + (index + 1) + "]")).Click();
             return this;
         }
 
         //Переход на страницу редактирования контакта из таблицы на главной странице
-        public ContactHelper TableEdit()
+        public ContactHelper TableEdit(int index)
         {
-            driver.FindElement(By.XPath("(//img[@alt='Edit'])[1]")).Click();
+            driver.FindElement(By.XPath("(//img[@alt='Edit'])[" + (index + 1) + "]")).Click();
             return this;
         }
 
@@ -251,7 +251,7 @@ namespace WebAddressbookTests
             {
                 String lastName = element.FindElement(By.CssSelector("td:nth-of-type(2)")).Text;
                 String firstName = element.FindElement(By.CssSelector("td:nth-of-type(3)")).Text;
-                entries.Add(new EntryData(lastName, firstName));
+                entries.Add(new EntryData(firstName, lastName));
                 
             }
             return entries;

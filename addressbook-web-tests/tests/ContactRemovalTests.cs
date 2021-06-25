@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -15,12 +16,19 @@ namespace WebAddressbookTests
         {
             // prepare
             app.Contacts.IsContactCreate();
+            List<EntryData> oldEntries = app.Contacts.GetEntriesList();
+
 
             // action
-            app.Contacts.RemoveFromDetail();
+            app.Contacts.RemoveFromDetail(0);
+
+            List<EntryData> newEntries = app.Contacts.GetEntriesList();
+            oldEntries.RemoveAt(0);
+            oldEntries.Sort();
+            newEntries.Sort();
 
             // verification
-            Assert.IsTrue(app.Contacts.IsContactRemovalFromDetail());
+            Assert.AreEqual(oldEntries, newEntries);
 
         }
 
@@ -29,12 +37,18 @@ namespace WebAddressbookTests
         {
             // prepare
             app.Contacts.IsContactCreate();
+            List<EntryData> oldEntries = app.Contacts.GetEntriesList();
 
             // action
-            app.Contacts.RemoveFromMainPage();
+            app.Contacts.RemoveFromMainPage(0);
+
+            List<EntryData> newEntries = app.Contacts.GetEntriesList();
+            oldEntries.RemoveAt(0);
+            oldEntries.Sort();
+            newEntries.Sort();
 
             // verification
-            Assert.IsTrue(app.Contacts.IsContactRemovalFromMainPage());
+            Assert.AreEqual(oldEntries, newEntries);
         }
 
         [Test]
@@ -42,12 +56,18 @@ namespace WebAddressbookTests
         {
             // prepare
             app.Contacts.IsContactCreate();
+            List<EntryData> oldEntries = app.Contacts.GetEntriesList();
 
             // action
             app.Contacts.RemoveFromMainPageWithCheckbox();
 
+            List<EntryData> newEntries = app.Contacts.GetEntriesList();
+            oldEntries.RemoveAt(0);
+            oldEntries.Sort();
+            newEntries.Sort();
+
             // verification
-            Assert.IsTrue(app.Contacts.IsContactRemovalFromMainPage());
+            Assert.AreEqual(oldEntries, newEntries);
         }
 
         [Test]
@@ -59,9 +79,10 @@ namespace WebAddressbookTests
             // action
             app.Contacts.AllRemoveFromMainPage();
 
-            // verification
-            Assert.IsTrue(app.Contacts.IsContactRemovalFromMainPage());
+            List<EntryData> newEntries = app.Contacts.GetEntriesList();
 
+            // verification
+            Assert.AreEqual(0, newEntries.Count);
         }
     }
 }
