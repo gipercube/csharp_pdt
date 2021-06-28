@@ -18,6 +18,7 @@ namespace WebAddressbookTests
 
             // action
             List<GroupData> oldGroups = app.Groups.GetGroupList();
+            GroupData oldData = oldGroups[0];
 
             GroupData newData = new GroupData("Modify Group Name with if");
             newData.Header = "Modify Group Header";
@@ -33,6 +34,13 @@ namespace WebAddressbookTests
             Assert.AreEqual(oldGroups, newGroups);
             // app.Groups.IsGroupModified();
 
+            foreach (GroupData group in newGroups)
+            {
+                if (group.Id == oldData.Id)
+                {
+                    Assert.AreEqual(newData.Name, group.Name);
+                }
+            }
         }
     }
 }
