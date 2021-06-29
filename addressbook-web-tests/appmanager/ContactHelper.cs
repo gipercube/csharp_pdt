@@ -39,6 +39,7 @@ namespace WebAddressbookTests
             TableDetails(index);
             DetailsModify();
             DeleteEntry();
+            ReturnToMainPage();
             return this;
         }
 
@@ -46,6 +47,7 @@ namespace WebAddressbookTests
         {
             TableEdit(index);
             DeleteEntry();
+            ReturnToMainPage();
             return this;
         }
 
@@ -53,12 +55,14 @@ namespace WebAddressbookTests
         {
             FirstCheckboxSelect();
             DeleteEntryFromMainPage();
+            ReturnToMainPage();
             return this;
         }
         public ContactHelper AllRemoveFromMainPage()
         {
             SelectAll();
             DeleteEntryFromMainPage();
+            ReturnToMainPage();
             return this;
         }
 
@@ -81,6 +85,11 @@ namespace WebAddressbookTests
             FirstCheckboxSelect();
             RemoveFromGroup(1);
             return this;
+        }
+
+        public int GetContactCount()
+        {
+            return driver.FindElements(By.CssSelector("tr[name='entry']")).Count;
         }
 
         public ContactHelper ModifyFromDetailTest(EntryData newEntry, int index)
@@ -114,11 +123,12 @@ namespace WebAddressbookTests
         public ContactHelper SubmitEntryCreation()
         {
             driver.FindElement(By.XPath("(//input[@name='submit'])[2]")).Click();
+            entryCache = null;
             return this;
         }
         public ContactHelper ReturnToMainPage()
         {
-            driver.FindElement(By.LinkText("home page")).Click();
+            driver.FindElement(By.LinkText("home")).Click();
             return this;
         }
 
@@ -140,6 +150,7 @@ namespace WebAddressbookTests
         public ContactHelper DetailsModify()
         {
             driver.FindElement(By.XPath("//input[@name='modifiy']")).Click();
+            entryCache = null;
             return this;
         }
 
@@ -147,6 +158,7 @@ namespace WebAddressbookTests
         public ContactHelper UpdatetEntry()
         {
             driver.FindElement(By.XPath("(//input[@value='Update'])")).Click();
+            entryCache = null;
             return this;
         }
         
@@ -154,6 +166,7 @@ namespace WebAddressbookTests
         public ContactHelper DeleteEntry()
         {
             driver.FindElement(By.XPath("(//input[@value='Delete'])")).Click();
+            entryCache = null;
             return this;
         }
 
@@ -161,6 +174,7 @@ namespace WebAddressbookTests
         {
             driver.FindElement(By.XPath("(//input[@value='Delete'])")).Click();
             driver.SwitchTo().Alert().Accept();
+            entryCache = null;
             return this;
         }
 
@@ -242,19 +256,27 @@ namespace WebAddressbookTests
                    && driver.FindElement(By.CssSelector("#content h1")).Text == "Delete record";
         }
 
+        private List<EntryData> entryCache = null;
+
         public List<EntryData> GetEntriesList()
         {
-            List<EntryData> entries = new List<EntryData>() { };
-            manager.Navigator.OpenHomePage();
-            ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("tr[name='entry']"));
-            foreach (IWebElement element in elements)
+            if (entryCache == null)
             {
-                String lastName = element.FindElement(By.CssSelector("td:nth-of-type(2)")).Text;
-                String firstName = element.FindElement(By.CssSelector("td:nth-of-type(3)")).Text;
-                entries.Add(new EntryData(firstName, lastName));
-                
+                entryCache = new List<EntryData>() { };
+                manager.Navigator.OpenHomePage();
+                ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("tr[name='entry']"));
+                foreach (IWebElement element in elements)
+                {
+                    String lastName = element.FindElement(By.CssSelector("td:nth-of-type(2)")).Text;
+                    String firstName = element.FindElement(By.CssSelector("td:nth-of-type(3)")).Text;
+                    entryCache.Add(new EntryData(firstName, lastName)
+                    {
+                        Id = element.FindElement(By.TagName("input")).GetAttribute("id")
+                    }) ;
+                }
             }
-            return entries;
+
+            return new List<EntryData>(entryCache);
         }
 
     }

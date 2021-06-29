@@ -8,43 +8,23 @@ namespace WebAddressbookTests
 {
     public class EntryData : IEquatable<EntryData>, IComparable<EntryData>
     {
-        public string firstname;
-        public string lastname = "";
 
         public EntryData (string firstname)
         {
-            this.firstname = firstname;
+            Firstname = firstname;
         }
 
         public EntryData (string firstname, string lastname)
         {
-            this.firstname = firstname;
-            this.lastname = lastname;
+            Firstname = firstname;
+            Lastname = lastname;
         }
 
-        public string Firstname
-        {
-            get
-            {
-                return firstname;
-            }
-            set
-            {
-                firstname = value;
-            }
-        }
+        public string Firstname { get; set; }
 
-        public string Lastname
-        {
-            get
-            {
-                return lastname;
-            }
-            set
-            {
-                lastname = value;
-            }
-        }
+        public string Lastname { get; set; }
+
+        public string Id { get; set; }
 
         public int CompareTo(EntryData other)
         {
@@ -84,12 +64,12 @@ namespace WebAddressbookTests
 
         public override int GetHashCode()
         {
-            return (firstname + lastname).GetHashCode();
+            return (Firstname + Lastname).GetHashCode();
         }
 
         public override string ToString()
         {
-            return firstname;
+            return Firstname;
         }
 
     }

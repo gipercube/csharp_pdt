@@ -22,15 +22,20 @@ namespace WebAddressbookTests
             // action
             app.Contacts.RemoveFromDetail(0);
 
+            Assert.AreEqual(oldEntries.Count - 1, app.Contacts.GetContactCount());
+
             List<EntryData> newEntries = app.Contacts.GetEntriesList();
+            EntryData toBeRemoved = oldEntries[0];
             oldEntries.RemoveAt(0);
             oldEntries.Sort();
             newEntries.Sort();
 
             // verification
-            Assert.AreEqual(oldEntries, newEntries);
-
-        }
+            foreach (EntryData entry in newEntries)
+            {
+                Assert.AreEqual(entry.Id, toBeRemoved.Id);
+            }
+    }
 
         [Test]
         public void ContactRemovalFromMainPageTest()
@@ -38,17 +43,26 @@ namespace WebAddressbookTests
             // prepare
             app.Contacts.IsContactCreate();
             List<EntryData> oldEntries = app.Contacts.GetEntriesList();
+            EntryData toBeRemoved = oldEntries[0];
 
             // action
             app.Contacts.RemoveFromMainPage(0);
 
+            Assert.AreEqual(oldEntries.Count - 1, app.Contacts.GetContactCount());
+
             List<EntryData> newEntries = app.Contacts.GetEntriesList();
+            
             oldEntries.RemoveAt(0);
             oldEntries.Sort();
             newEntries.Sort();
 
             // verification
             Assert.AreEqual(oldEntries, newEntries);
+
+            foreach (EntryData entry in newEntries)
+            {
+                Assert.AreEqual(entry.Id, toBeRemoved.Id);
+            }
         }
 
         [Test]
@@ -57,17 +71,24 @@ namespace WebAddressbookTests
             // prepare
             app.Contacts.IsContactCreate();
             List<EntryData> oldEntries = app.Contacts.GetEntriesList();
+            EntryData toBeRemoved = oldEntries[0];
 
             // action
             app.Contacts.RemoveFromMainPageWithCheckbox();
 
+            Assert.AreEqual(oldEntries.Count - 1, app.Contacts.GetContactCount());
+
             List<EntryData> newEntries = app.Contacts.GetEntriesList();
+            
             oldEntries.RemoveAt(0);
             oldEntries.Sort();
             newEntries.Sort();
 
             // verification
-            Assert.AreEqual(oldEntries, newEntries);
+            foreach (EntryData entry in newEntries)
+            {
+                Assert.AreEqual(entry.Id, toBeRemoved.Id);
+            }
         }
 
         [Test]

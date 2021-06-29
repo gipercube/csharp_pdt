@@ -16,7 +16,9 @@ namespace WebAddressbookTests
         {
             // prepare
             app.Contacts.IsContactCreate();
+                     
             List<EntryData> oldEntry = app.Contacts.GetEntriesList();
+            EntryData oldDate = oldEntry[0];
             EntryData newEntry = new EntryData("New Иван");
             newEntry.Lastname = "New Петров";
 
@@ -25,15 +27,22 @@ namespace WebAddressbookTests
             oldEntry[0].Firstname = newEntry.Firstname;
             oldEntry[0].Lastname = newEntry.Lastname;
 
+            Assert.AreEqual(oldEntry.Count, app.Contacts.GetContactCount());
+
             List<EntryData> newEntryMod = app.Contacts.GetEntriesList();
             oldEntry.Sort();
             newEntryMod.Sort();
 
             // verification
-            Assert.AreEqual(oldEntry[0], newEntryMod[0]);
+            foreach (EntryData entry in newEntryMod)
+            {
+                if (entry.Id == oldDate.Id)
+                {
+                    Assert.AreEqual(newEntry.Firstname, entry.Firstname);
+                    Assert.AreEqual(newEntry.Lastname, entry.Lastname);
+                }
+            }
         }
-
-
 
         [Test]
         public void ContactModifyFromMainPageTest()
@@ -42,7 +51,9 @@ namespace WebAddressbookTests
             app.Contacts.IsContactCreate();
             List<EntryData> oldEntry = app.Contacts.GetEntriesList();
             app.Contacts.TableEdit(0);
-                        
+
+            EntryData oldDate = oldEntry[0];
+
             EntryData newEntry = new EntryData("11");
             newEntry.Lastname = "22";
 
@@ -51,12 +62,21 @@ namespace WebAddressbookTests
             oldEntry[0].Firstname = newEntry.Firstname;
             oldEntry[0].Lastname = newEntry.Lastname;
 
+            Assert.AreEqual(oldEntry.Count, app.Contacts.GetContactCount());
+
             List<EntryData> newEntryMod = app.Contacts.GetEntriesList();
             oldEntry.Sort();
             newEntryMod.Sort();
 
             // verification
-            Assert.AreEqual(oldEntry[0], newEntryMod[0]);
+            foreach (EntryData entry in newEntryMod)
+            {
+                if (entry.Id == oldDate.Id)
+                {
+                    Assert.AreEqual(newEntry.Firstname, entry.Firstname);
+                    Assert.AreEqual(newEntry.Lastname, entry.Lastname);
+                }
+            }
         }
 
         [Test]

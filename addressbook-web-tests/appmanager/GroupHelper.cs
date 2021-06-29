@@ -20,6 +20,7 @@ namespace WebAddressbookTests
         {
             SelectGroup(groupNo);
             RemoveGroup();
+            ReturnToGroupsPage();
             return this;
         }
 
