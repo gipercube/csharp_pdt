@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
@@ -15,6 +16,48 @@ namespace WebAddressbookTests
         public ContactHelper(ApplicationManager manager) : base(manager)
         {
         }
+
+        public EntryData GetContactInformationFromTable(int index)
+        {
+            manager.Navigator.OpenHomePage();
+            IList<IWebElement> cells = driver.FindElements(By.Name("entry"))[index]
+                .FindElements(By.TagName("td"));
+            string lastName = cells[1].Text;
+            string firstName = cells[2].Text;
+            string address = cells[3].Text;
+            string email = cells[4].Text;
+            string allPhones = cells[5].Text;
+
+            return new EntryData(firstName, lastName)
+            {
+                Address = address,
+                Email = email,
+                AllPhones = allPhones
+            };
+        }
+
+        public EntryData GetContactInformationFromEdirform(int index)
+        {
+            manager.Navigator.OpenHomePage();
+            TableEdit(index);
+            string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
+            string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
+            string email = driver.FindElement(By.Name("email")).GetAttribute("value");
+            string address = driver.FindElement(By.Name("address")).GetAttribute("value");
+            string homePhone = driver.FindElement(By.Name("home")).GetAttribute("value");
+            string mobilePhone = driver.FindElement(By.Name("mobile")).GetAttribute("value");
+            string workPhone = driver.FindElement(By.Name("work")).GetAttribute("value");
+
+            return new EntryData(firstName, lastName)
+            {
+                Address = address,
+                Email = email,
+                HomePhone = homePhone,
+                MobilePhone = mobilePhone,
+                WorkPhone = workPhone
+            };
+        }
+
         public ContactHelper Create(EntryData entry)
         {
             FillNewEntryForm(entry);
@@ -118,6 +161,11 @@ namespace WebAddressbookTests
         {
             Type(By.Name("firstname"), entry.Firstname);
             Type(By.Name("lastname"), entry.Lastname);
+            Type(By.Name("address"), entry.Address);
+            Type(By.Name("email"), entry.Email);
+            Type(By.Name("home"), entry.HomePhone);
+            Type(By.Name("mobile"), entry.MobilePhone);
+            Type(By.Name("work"), entry.WorkPhone);
             return this;
         }
         public ContactHelper SubmitEntryCreation()
@@ -213,6 +261,11 @@ namespace WebAddressbookTests
                 manager.Navigator.GoToAddNewEntry();
                 EntryData entry = new EntryData("Иван через if");
                 entry.Lastname = "Петров";
+                entry.Address = "РФ, г. Москва, ул. Ленина, дом 12, литер Б";
+                entry.Email = "mail@e.ru";
+                entry.HomePhone = "+7 (955) 158-15-45";
+                entry.MobilePhone = "+75889562571";
+                entry.WorkPhone = "83435952566";
                 Create(entry);
             } 
         }
@@ -277,6 +330,14 @@ namespace WebAddressbookTests
             }
 
             return new List<EntryData>(entryCache);
+        }
+
+        public int GetNumberOfSearchResults()
+        {
+            manager.Navigator.OpenHomePage();
+            string text = driver.FindElement(By.TagName("label")).Text;
+            Match m = new Regex(@"\d+").Match(text);
+            return Int32.Parse(m.Value);
         }
 
     }
