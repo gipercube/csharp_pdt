@@ -20,13 +20,27 @@ namespace WebAddressbookTests
 
             // action
             EntryData fromTable = app.Contacts.GetContactInformationFromTable(0);
-            EntryData fromForm = app.Contacts.GetContactInformationFromEdirform(0);
+            EntryData fromForm = app.Contacts.GetContactInformationFromEditform(0);
 
             //verification
             Assert.AreEqual(fromTable, fromForm);
             Assert.AreEqual(fromTable.Address, fromForm.Address);
             Assert.AreEqual(fromTable.Email, fromForm.Email);
             Assert.AreEqual(fromTable.AllPhones, fromForm.AllPhones);
+
+        }
+        [Test]
+        public void TestContactDetailsInformation()
+        {
+            // prepare
+            app.Contacts.IsContactCreate();
+
+            // action
+            string fromTable = app.Contacts.GetContactInformationFromTableToString(0);
+            string fromDetails = app.Contacts.GetContactInformationFromDetailsform(0);
+
+            //verification
+            Assert.AreEqual(fromTable, fromDetails);
 
         }
     }

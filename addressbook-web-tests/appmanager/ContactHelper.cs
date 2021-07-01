@@ -36,7 +36,40 @@ namespace WebAddressbookTests
             };
         }
 
-        public EntryData GetContactInformationFromEdirform(int index)
+        public string GetContactInformationFromTableToString(int index)
+        {
+            manager.Navigator.OpenHomePage();
+            IList<IWebElement> cells = driver.FindElements(By.Name("entry"))[index]
+                .FindElements(By.TagName("td"));
+            string entryDetail = "";
+            for (int i = 1; i < 6; i++)
+            {
+                if (i == 1)
+                {
+                    entryDetail += cells[2].Text;
+                } 
+                else if (i == 2)
+                {
+                    entryDetail += cells[1].Text;
+                }
+                else if (i == 4)
+                {
+                    entryDetail += cells[5].Text;
+                }
+                else if (i == 5)
+                {
+                    entryDetail += cells[4].Text;
+                }
+                else
+                {
+                    entryDetail += cells[i].Text;
+                }
+            }
+
+            return Regex.Replace(entryDetail, "[ ()\r\n-]", "");
+        }
+
+        public EntryData GetContactInformationFromEditform(int index)
         {
             manager.Navigator.OpenHomePage();
             TableEdit(index);
@@ -57,6 +90,17 @@ namespace WebAddressbookTests
                 WorkPhone = workPhone
             };
         }
+
+        public string GetContactInformationFromDetailsform(int index)
+        {
+            manager.Navigator.OpenHomePage();
+            TableDetails(index);
+            string content = driver.FindElement(By.Id("content")).Text;
+
+            return Regex.Replace(content, "(H:|M:|W:|[ ()\r\n-])", "");
+
+        }
+
 
         public ContactHelper Create(EntryData entry)
         {
@@ -193,6 +237,7 @@ namespace WebAddressbookTests
             driver.FindElement(By.XPath("(//img[@alt='Edit'])[" + (index + 1) + "]")).Click();
             return this;
         }
+
 
         //Переход на страницу редактирования контакта из детальной страницы контакта
         public ContactHelper DetailsModify()
